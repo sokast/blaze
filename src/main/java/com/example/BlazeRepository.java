@@ -1,17 +1,22 @@
 package com.example;
 
+import com.blazebit.persistence.CriteriaBuilderFactory;
 import com.example.model.Item;
-import io.quarkus.hibernate.orm.panache.PanacheRepositoryBase;
 import java.util.List;
 import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
+import javax.persistence.EntityManager;
 
-/**
- * The Key Repository
- */
 @ApplicationScoped
-public class Repository implements PanacheRepositoryBase<Item, Integer> {
+public class BlazeRepository {
+
+  @Inject
+  EntityManager em;
+
+  @Inject
+  CriteriaBuilderFactory cbf;
 
   public List<Item> findAllItems() {
-    return findAll().list();
+    return cbf.create(em, Item.class).getResultList();
   }
 }
